@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# PiBlock runtime state
+logs/
+piblock.pid
+stats.json
+*.log
+
+# Docker / editor / OS noise
+.env
+.DS_Store
+.idea/
+.vscode/

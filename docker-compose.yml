@@ -1,0 +1,19 @@
+services:
+  piblock:
+    build: .
+    image: piblock:latest
+    container_name: piblock
+    restart: unless-stopped
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+    volumes:
+      # Edit ./config.yaml on the host; PiBlock reads it on start.
+      - ./config.yaml:/app/config.yaml:ro
+      # Keep logs and stats on the host.
+      - ./logs:/app/logs
+    stop_grace_period: 15s
+    # On Linux you may prefer the host network stack, which preserves real
+    # client IP addresses in the logs. If you enable it, remove the "ports"
+    # block above:
+    # network_mode: host

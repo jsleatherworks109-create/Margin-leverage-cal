@@ -1,0 +1,59 @@
+# =============================================================================
+#  PiBlock configuration
+#  Edit this file, then run:  ./stop.sh && ./start.sh
+# =============================================================================
+
+# IP address to listen on.
+#   0.0.0.0  = all interfaces (recommended; access is limited by allow_networks)
+#   Use the Pi's LAN address if you only want to serve one interface.
+listen: 0.0.0.0
+
+# DNS port.  53 is the standard port (start.sh uses sudo for it).
+port: 53
+
+# Upstream DNS servers.  Use numeric IPs (never hostnames).
+# The next server is tried automatically when one fails or times out.
+upstreams:
+  - 1.1.1.1
+  - 8.8.8.8
+
+# Domains to block.  Each entry blocks the domain itself AND every subdomain.
+# Example: "example.com" blocks example.com, www.example.com, api.example.com...
+# Add as many as you like, one per line.  Do not use "https://" or "*.".
+blocked_domains:
+  - example.com
+
+# Lightweight in-memory response cache.
+cache:
+  enabled: true
+  max_entries: 4096
+  min_ttl: 1          # responses below this TTL are not cached (seconds)
+  max_ttl: 3600       # never cache a response longer than this (seconds)
+
+# Seconds to wait for an upstream DNS server before trying the next one.
+query_timeout: 2.0
+
+# Negative-caching TTL attached to NXDOMAIN answers for blocked domains.
+blocked_ttl: 60
+
+# Only answer clients from these networks (LAN-only, never the public
+# internet).  Docker's bridge network is included so the optional Docker
+# setup works out of the box.  Do NOT add 0.0.0.0/0.
+allow_networks:
+  - 127.0.0.0/8
+  - 10.0.0.0/8
+  - 172.16.0.0/12
+  - 192.168.0.0/16
+  - ::1/128
+  - fc00::/7
+  - fe80::/10
+
+# Log every forwarded query (useful while testing, noisier on disk).
+log_queries: false
+
+# Log files.  Relative paths are resolved next to this config file.
+log_file: logs/piblock.log
+blocked_log: logs/blocked.log
+
+# DEBUG, INFO, WARNING or ERROR.
+log_level: INFO
